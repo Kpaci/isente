@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+    <title>Isente - Smart Cash &amp; Mobile Money Tracker</title>
+    <meta name="description" content="Isente: Minimalist &amp; vibrant personal finance tracker with automated Mobile Money SMS recognition, debt tracking, savings targets, and budget alerts." />
+    <meta property="og:title" content="Isente - Smart Cash &amp; Mobile Money Tracker" />
+    <meta property="og:description" content="Isente: Minimalist &amp; vibrant personal finance tracker with automated Mobile Money SMS recognition, debt tracking, savings targets, and budget alerts." />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="theme-color" content="#080c14" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="Isente" />
+    <link rel="manifest" href="/manifest.webmanifest" />
+    <link rel="manifest" href="/manifest.json" />
+    <link rel="icon" type="image/jpeg" href="/assets/isente_app_icon_1792687890512-qVmkEYCS.jpg" />
+    <link rel="apple-touch-icon" href="/assets/isente_app_icon_1792687890512-qVmkEYCS.jpg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+      // Early capture of beforeinstallprompt so Android Chrome never misses it
+      window.__beforeInstallPromptEvent = null;
+      window.addEventListener('beforeinstallprompt', function(e) {
+        e.preventDefault();
+        window.__beforeInstallPromptEvent = e;
+        window.dispatchEvent(new CustomEvent('pwa-prompt-available', { detail: e }));
+      });
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', function() {
+          navigator.serviceWorker.register('/sw.js', { scope: '/' }).catch(function(err) {
+            console.warn('SW registration:', err);
+          });
+        });
+      }
+    </script>
+    <script type="module" crossorigin src="/assets/index-C0NiTnwF.js"></script>
+    <link rel="stylesheet" crossorigin href="/assets/index-eL2nYliO.css">
+  </head>
+  <body class="bg-[#080c14] text-slate-100 antialiased selection:bg-emerald-400 selection:text-slate-950 font-sans min-h-screen">
+    <div id="root"></div>
+  </body>
+</html>

@@ -1,0 +1,14 @@
+{
+	"appId": "com.isente.cash",
+	"appName": "Isente",
+	"webDir": "dist",
+	"server": {
+		"androidScheme": "https",
+		"cleartext": false
+	},
+	"android": {
+		"allowMixedContent": false,
+		"captureInput": true,
+		"backgroundColor": "#080c14"
+	}
+}

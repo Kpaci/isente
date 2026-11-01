@@ -1,0 +1,6 @@
+{
+  "summary":  "Implementation plan for generating the executable Android APK binary via automated GitHub Actions cloud build, and linking the resulting APK from Google Drive directly into the Isente app for one-tap installation on Android devices.",
+  "updatedAt":  "2026-11-01T17:53:29.284285605Z",
+  "requestFeedback":  true,
+  "userFacing":  true
+}

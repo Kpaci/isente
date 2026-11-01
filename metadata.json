@@ -1,0 +1,8 @@
+{
+  "name": "MoMoPay Finance",
+  "description": "Android personal finance tracker with Mobile Money SMS parser, debt tracking, savings targets, and budget limit alerts.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

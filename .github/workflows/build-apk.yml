@@ -1,0 +1,83 @@
+name: Build Isente Android APK
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Release version name (e.g. v1.0.0)'
+        required: true
+        default: 'v1.0.0'
+  push:
+    branches:
+      - main
+      - master
+
+permissions:
+  contents: write
+
+jobs:
+  build-apk:
+    name: Build & Package Android APK
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Source Code
+        uses: actions/checkout@v4
+
+      - name: Set up Java 17 (Eclipse Temurin)
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Set up Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: Install Node Dependencies
+        run: npm ci || npm install
+
+      - name: Build Web Application (Vite)
+        run: npm run build
+
+      - name: Sync Capacitor Android Project
+        run: npx cap sync android
+
+      - name: Make Gradle Wrapper Executable
+        run: chmod +x android/gradlew
+
+      - name: Build Android APK with Gradle
+        run: |
+          cd android
+          ./gradlew assembleDebug --no-daemon --stacktrace
+
+      - name: Prepare APK Release Artifacts
+        run: |
+          VERSION="${{ github.event.inputs.version || 'v1.0.0' }}"
+          mkdir -p apk-release
+          cp android/app/build/outputs/apk/debug/app-debug.apk "apk-release/Isente-${VERSION}.apk"
+          cp android/app/build/outputs/apk/debug/app-debug.apk apk-release/Isente-latest.apk
+          echo "APK generated successfully: apk-release/Isente-${VERSION}.apk"
+
+      - name: Upload Isente APK as Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: Isente-Android-APK
+          path: apk-release/*.apk
+          retention-days: 30
+
+      - name: Write Step Summary
+        run: |
+          VERSION="${{ github.event.inputs.version || 'v1.0.0' }}"
+          echo "## 🎉 Isente Android APK Built Successfully!" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "Your native Android APK is ready for sideloading and distribution." >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### Next Steps for In-App Direct Download:" >> $GITHUB_STEP_SUMMARY
+          echo "1. **Download the APK**: Scroll down to the **Artifacts** section below and download **Isente-Android-APK**." >> $GITHUB_STEP_SUMMARY
+          echo "2. **Upload to Google Drive**: Upload the downloaded \`Isente-${VERSION}.apk\` to your Google Drive." >> $GITHUB_STEP_SUMMARY
+          echo "3. **Set Link Sharing**: Right click the file in Drive → **Share** → Change access to **'Anyone with the link' (Viewer)**." >> $GITHUB_STEP_SUMMARY
+          echo "4. **Publish in Isente App**: Open your Isente web app, open the **Isente Android App (.apk)** menu item, paste your Google Drive link into the Admin field, and click **Publish New APK Link**." >> $GITHUB_STEP_SUMMARY
+          echo "5. **Done**: All users will now see a single **Download Isente APK** button that installs the app directly!" >> $GITHUB_STEP_SUMMARY
